@@ -1,0 +1,66 @@
+@startuml
+
+Class Producto{
+    -precio: double
+    -nombre: String
+    -categoria: String
+    +getNombre(): String
+    +getPrecio(): double
+    +getCategoria(): String
+}
+
+Class Buscador{
+
+    +agregarProducto(unProducto: Producto): void
+    +buscarPorCriterioYTope(unCriterio: ICriterioBusqueda, tope: int): List<Producto>
+
+}
+
+
+Interface ICriterioBusqueda{
+    +coincideCon(unProducto: Producto): boolean
+}
+
+Class NombreExacto{
+    -nombreExacto: String
+    +coincideCon(unProducto: Producto): boolean
+}
+
+Class NombreAproximado{
+    -nombreAproximado: String
+    +coincideCon(unProducto: Producto): boolean
+}
+
+Class CategoriaAproximada{
+    -nombreAproximado: String
+    +coincideCon(unProducto: Producto): boolean
+}
+
+Class Precio{
+    -precioDesde: double
+    -precioHasta: double
+    +coincideCon(unProducto: Producto): boolean
+}
+
+Class Tope{
+    -productos: Collection<Producto>
+    -topeMaximo: int
+    +coincideCon(unProducto: Producto): boolean
+}
+
+
+Buscador "0" -right-> "..*" Producto
+
+Buscador ..> ICriterioBusqueda
+
+Compuesto ...|> ICriterioBusqueda
+NombreExacto .up.|> ICriterioBusqueda
+NombreAproximado .up.|> ICriterioBusqueda
+CategoriaAproximada .up.|> ICriterioBusqueda
+Precio .up.|> ICriterioBusqueda
+Tope .up.|> ICriterioBusqueda
+
+Compuesto "1" -right-> "*" ICriterioBusqueda
+
+
+@enduml

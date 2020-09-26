@@ -1,0 +1,25 @@
+@startuml
+
+
+User -> "unBuscador:Buscador" ++ : buscarPor(criterio: ICriterioBusqueda): List<Producto>
+"unBuscador:Buscador" -> ":CriterioCompuesto" ** : create
+
+    loop para cada producto
+        "unBuscador:Buscador" -> ":CriterioCompuesto" ++ : coincideCon(producto:Producto): boolean
+        ":CriterioCompuesto" -> ":CriterioCompuesto" ++ : self coincideCon(producto:Producto): boolean
+        loop para cada criterio
+            ":CriterioCompuesto" -> Criterio ++: coincideCon(producto: Producto)
+            return true
+        end
+        return true
+        ":CriterioCompuesto" --> "unBuscador:Buscador" -- : true
+        note over "unBuscador:Buscador": resultado.add producto;
+    end
+
+
+
+
+"unBuscador:Buscador" -> User -- : [List<Producto>]
+
+
+@enduml
